@@ -1,0 +1,66 @@
+---
+title: "ggplot"
+author: "Amdouni_Youssef"
+output: html_document
+runtime: shiny
+---
+# Data Visualisation with ggplot2 & plotly 
+ggplot2 is the most popular R package for data visualization, it is built on the idea of adding layers "Grammer of Graphics"
+1- Data: dataframe we want to explore 
+2- Aesthetics: specify features we want to plot 
+3- Geometries: function to represent data points (histogram, barplot, ...) 
+4- Facets: allow us to put multiple plots on a single canvas  
+5- Statistics: a statistical transformation performs some useful statistical summary
+6- Coordinates: deals with plot axis  
+7- Theme: add a theme to our plot to affect things such as coloring background
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+library(plotly)
+```
+
+
+```{r}
+head(mtcars)
+```
+```{r}
+str(mtcars)
+```
+
+```{r}
+# Data + Aesthetics + Geometries 
+ggplot(data = mtcars, aes(x=mpg, y=hp)) + geom_point()
+```
+
+
+```{r message=FALSE, warning=FALSE}
+# Data + Aesthetics + Geometries + Facets + Statistics + Coordinates + Theme
+ggplot(data = mtcars, aes(x=mpg, y=hp)) + geom_point() + facet_wrap(cyl ~ .) + stat_smooth() + coord_cartesian(xlim = c(10, 35)) + xlab("Miles per Gallon") + ylab("Gross horsepower") + ggtitle("Gross horsepower function of miles per gallon") + theme_dark() + theme(plot.title = element_text(hjust=0.5, color = "blue", face = "bold", size = 14))
+```
+```{r message=FALSE, warning=FALSE}
+ggplot(mtcars, aes(mpg, wt, colour = factor(cyl))) + geom_point(aes(size=wt), alpha=0.7) + xlab("Miles per Gallon") + ylab("Gross horsepower") + theme_bw()
+```
+```{r}
+ggplot(mtcars, aes(x = factor(cyl), y = mpg, fill = factor(cyl))) + geom_boxplot() + ylab("Miles/Gallon") + xlab("Number of cylinders") + theme_bw()
+```
+Now we will use the mpg data to explore other Titanic geometries 
+```{r message=FALSE, warning=FALSE}
+data <- read.csv("data/titanic_train.csv")
+head(data)
+```
+```{r message=FALSE, warning=FALSE}
+ggplot(data = data, aes(x = Age)) + geom_histogram(binwidth = 1, color = "black", fill = "pink", alpha = 0.8) +   labs(title = "Age distribution in the Titanic data", x = "Age", y = "Number of passengers") + theme_bw() +  theme(plot.title = element_text(size = 14, color = "red", hjust = 0.5))
+```
+
+
+```{r message=FALSE, warning=FALSE}
+ggplot(data = data, aes(x = Age, fill = factor(Survived))) + geom_histogram(binwidth = 1, position = "identity", alpha = 0.5) +   labs(title = "Age distribution in the Titanic data", x = "Age", y = "Number of passengers") + theme_bw() +  theme(plot.title = element_text(size = 14, color = "blue", hjust = 0.5))
+
+```
+```{r}
+ggplot(data = data, aes(x = factor(Survived))) + geom_bar(aes(fill = factor(Pclass))) + theme_bw()
+```
+```{r}
+ggplot(data = data, aes(x = factor(Survived), fill = factor(Pclass))) + geom_bar(position = position_dodge(width = 1)) +
+labs(title = "Survival by Pclass", x = "Survived") + theme_bw() + theme(plot.title = element_text(hjust = 0.5, size = 15)) 
+```
