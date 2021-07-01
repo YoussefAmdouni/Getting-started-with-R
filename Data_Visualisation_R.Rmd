@@ -1,18 +1,18 @@
 ---
-title: "ggplot"
+title: "R_Data_Visualisation"
 author: "Amdouni_Youssef"
 output: html_document
-runtime: shiny
 ---
+
 # Data Visualisation with ggplot2 & plotly 
-ggplot2 is the most popular R package for data visualization, it is built on the idea of adding layers "Grammer of Graphics"
-1- Data: dataframe we want to explore 
-2- Aesthetics: specify features we want to plot 
-3- Geometries: function to represent data points (histogram, barplot, ...) 
-4- Facets: allow us to put multiple plots on a single canvas  
-5- Statistics: a statistical transformation performs some useful statistical summary
-6- Coordinates: deals with plot axis  
-7- Theme: add a theme to our plot to affect things such as coloring background
+#### ggplot2 is the most popular R package for data visualization, it is built on the idea of adding layers "Grammer of Graphics"
+* Data: dataframe we want to explore 
+* Aesthetics: specify features we want to plot 
+* Geometries: function to represent data points (histogram, barplot, ...) 
+* Facets: allow us to put multiple plots on a single canvas  
+* Statistics: a statistical transformation performs some useful statistical summary
+* Coordinates: deals with plot axis  
+* Theme: add a theme to our plot to affect things such as coloring background
 
 ```{r message=FALSE, warning=FALSE}
 library(ggplot2)
