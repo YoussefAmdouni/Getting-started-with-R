@@ -4,7 +4,7 @@ author: "Amdouni_Youssef"
 output: html_document
 ---
 
-# Data Visualisation with ggplot2 & plotly 
+# Data Visualisation with ggplot2  
 #### ggplot2 is the most popular R package for data visualization, it is built on the idea of adding layers "Grammer of Graphics"
 * Data: dataframe we want to explore 
 * Aesthetics: specify features we want to plot 
@@ -43,6 +43,7 @@ ggplot(mtcars, aes(mpg, wt, colour = factor(cyl))) + geom_point(aes(size=wt), al
 ```{r}
 ggplot(mtcars, aes(x = factor(cyl), y = mpg, fill = factor(cyl))) + geom_boxplot() + ylab("Miles/Gallon") + xlab("Number of cylinders") + theme_bw()
 ```
+
 Now we will use the mpg data to explore other Titanic geometries 
 ```{r message=FALSE, warning=FALSE}
 data <- read.csv("data/titanic_train.csv")
