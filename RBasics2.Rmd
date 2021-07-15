@@ -1,0 +1,126 @@
+---
+title: "RBasics2"
+author: "Amdouni_Youssef"
+output: html_document
+---
+### R Lists 
+
+list allow us to store a variety of data structures (vector,matrix, data frame, etc.) under a single variable.
+```{r}
+newList <- list(seq(1, 11, by = 2), list("Hello world", "R"))
+newList
+str(newList)
+```
+```{r}
+# extract element as vector 
+newList[[1]] 
+newList[[2]][[1]]
+newList[[2]][[2]]
+# extract item as a list
+newList[[2]][1]
+
+# extract the numbers item as a list
+newList[1]
+
+# multiply each element in the numbers item by 2
+newList[[1]] <- newList[[1]] * 2
+newList[[1]]
+```
+```{r}
+# name the items in the list 
+names(newList) <- c("Num", "Char")
+newList
+```
+```{r}
+newList$Num
+newList$Num <- newList$Num / 2
+newList$Num
+newList$Letter <- c("a", "b", "c")
+str(newList)
+```
+```{r}
+# remove "the iPhone"b" from the Letter item
+#newList[[3]] <- newList[[3]][-2]
+newList$Letter <- newList$Letter[-2]
+newList
+
+# remove Letter item from the list
+newList$Letter <- NULL
+# newList[[3]] <- NULL
+newList
+```
+### Function with R
+```{r}
+flip <- function(){
+  coin <- c("heads", "tails")
+  toss <- sample(coin, 10, replace = TRUE, prob = c(0.5, 0.5))
+  return(toss)
+}
+flip()
+```
+### For loops
+```{r}
+sum = 0
+for(i in 1:6){
+  sum <- sum + i
+  print(sum)
+} 
+```
+### while loops
+```{r}
+sum = 2
+iter = 1
+while(sum<8){
+  sum = sum + iter 
+  print(sum)
+}
+```
+### Logical operators
+
+- AND - &
+- OR - |
+- NOT - !
+
+Difference between | , || , & and &&
+
+- Comparison of the entire vector elements by element => | , &
+- Comparison of the first elements in the vectors => || , &&
+```{r}
+(-2:2) >= -1
+(-2:2) <= 1
+((-2:2) >= -1) & ((-2:2) <= 1)
+((-2:2) >= -1) | ((-2:2) <= 1)
+((-2:2) >= -1) && ((-2:2) <= 1)
+((-2:2) >= -1) || ((-2:2) <= 1)
+
+```
+### Conditions with R
+```{r}
+set.seed(128)
+mark <- runif(1, min = 2, max = 20)
+if (mark >= 18){
+  print("Excelent")
+}else if (mark>=15 & mark<18){
+  print("good")
+}else if (mark<15 & mark>=10){
+  print("Fair")
+}else{
+  print("Poor")
+}
+```
+## Build-IN R functions 
+| Functions     | Description   |
+|---------------|:-------------:|
+| abs(x)        | absolute value | 
+| sqrt(x)       | square root      |   
+| min(x), max(x)| min, max      |    
+| log(x)	      | natural logarithm |
+| log10(x)	    | common logarithm |
+| exp(x)        | exponential |
+| cos(x), acos(x), acosh(x), etc.| cosinus, etc.|
+| ceiling(x)    | returns the smallest integer not less than x; ceiling(3.3) = 4 |
+| floor(x)      | returns the largest integer not greater than x; floor(3.9) = 3 |
+| round(x, digit = n) | rounds the values in its first argument; round(3.456, 2) = 3.46 |
+| sort(x) | sort a vector or a factor; sort(c(5,2,9,1)) = 1 2 5 9 |
+| rev(x) | reverse vector items; rev(c(5,2,9,1)) = 1 9 2 5 |
+| append(x1, x2) | append item to vector; append(c(1,2,3), c(4,5)) = 1 2 3 4 5 |

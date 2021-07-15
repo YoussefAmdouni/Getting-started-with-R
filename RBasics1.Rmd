@@ -1,0 +1,156 @@
+---
+title: "RBasics1"
+author: "Amdouni_Youssef"
+output: html_document
+---
+
+### Arithmetic with R
+```{r}
+2+3 # Addition
+2-1 # Subtraction
+4/3 # Division
+2^3 # Exponents
+5 %% 2 # Modulo
+```
+### R Data Types
+```{r}
+var <- 45.5 # Numeric
+class(var)
+var <- 45 # Integer
+class(var)
+var <- TRUE # Logical
+class(var)
+var <- "Hello R" # Character
+class(var)
+```
+### Comparison Operators
+```{r}
+10 > 6
+10 >= 11
+10 <= 11
+2 == 2
+2 != 2
+```
+
+### Vectors with R
+
+A vector is a 1D array that can hold numeric, character and logical data. We can create vectors using the combine function c(). However, we can not mix different data type in an vector, R will force everything to be of the same type.
+
+```{r}
+# Indexing works by using brackets and passing the index position of the element as a number (index in R starts at 1)
+v <- c(1,2,3,4,5,6)
+is.vector(v)
+v[0]
+## Help
+# help(vector)
+# ??vector
+```
+```{r}
+class(v)
+```
+```{r}
+# We can also create vector using seq() function 
+seq(from = 1, to = 10, by = 2)
+```
+
+```{r}
+sprintf("v[1] => %d  v[3] => %d",v[1], v[3]) 
+v[c(1,2,3)]
+v[1:3]
+```
+```{r}
+v+v # Adding vectors 
+v-v # Subtracting vectors
+v*v # Multiplying vectors 
+v/v # Dividing vectors
+```
+
+```{r}
+# Indexing with names
+# To assign names to each element in our vector we can use the names() function.
+names(v) <- c('a','b','c','d','e','f')
+v[c('a','c','f')]
+attributes(v)
+names(v)
+# We can also add names when creating an object
+v <- c("a"=1, "b"=2, "c"=3, "d"=4, "e"=5, "f"=6)
+```
+```{r}
+v>4
+v[v>4]
+v[-c(2:4)]
+```
+```{r}
+sprintf("sum: %d  max: %d  min: %d, product: %d, mean: %.3f, variance: %.3f, standard deviation: %f, euclidean norm: %f", sum(v), max(v), min(v), prod(v), mean(v), var(v), sd(v), norm(v, type="2"))
+```
+```{r}
+# stats summary
+summary(v)
+```
+### R Matrices 
+```{r}
+matrix(v)
+```
+```{r}
+matrix(v, nrow = 2)
+matrix(v, nrow = 2, byrow = TRUE)
+```
+```{r}
+mat <- matrix(data = 1:9, nrow = 3)
+mat
+```
+```{r}
+mat * 2 # Multiplication
+mat / 2 # Division
+mat ^ 2 # Power
+mat > 4  # Comparison
+```
+```{r}
+mat + mat
+mat ^ mat
+mat * mat # Element wise matrix multiplication 
+mat %*% mat # Matrix multiplication
+t(mat) # Transpose
+```
+```{r}
+# Another way to create R matrix 
+matrix(seq(from = 2, to = 40, by=2), nrow = 10, dimnames = list(rep("row", 10), c("col1", "col2")))
+```
+
+```{r}
+# Creating matrix from vectors 
+s1 <- c(12, 13, 19, 5, 17)
+s2 <- c(16, 17, 18, 12, 15)
+result <- c(s1, s2)
+result.matrix <- matrix(data = result, nrow = 2, byrow = TRUE)
+result.matrix
+```
+```{r}
+colnames(result.matrix) <- c("maths", "physics", "english", "french", "computer science")
+rownames(result.matrix) <- c("s1","s2")
+result.matrix
+```
+```{r}
+# Binding columns and rows 
+# add column
+economy <- c(17,15)
+result.matrix <- cbind(result.matrix, economy)
+# add rows
+set.seed(1) 
+s3 <- sample.int(20, 6, replace = TRUE)
+s4 <- sample.int(20, 6, replace = TRUE)
+result.matrix <- rbind(result.matrix, s3, s4)
+result.matrix
+```
+```{r}
+# Stats operations 
+rowSums(result.matrix)
+colMeans(result.matrix)
+```
+```{r}
+# Indexing and Selecting
+result.matrix[,1]
+result.matrix[,"maths"]
+result.matrix[1:3,1:2]
+result.matrix[c(1,4),c("maths", "economy")]
+```
