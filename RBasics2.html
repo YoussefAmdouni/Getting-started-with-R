@@ -470,8 +470,8 @@ newList</code></pre>
   return(toss)
 }
 flip()</code></pre>
-<pre><code>##  [1] &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot; &quot;tails&quot;
-## [10] &quot;heads&quot;</code></pre>
+<pre><code>##  [1] &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot; &quot;heads&quot; &quot;tails&quot;
+## [10] &quot;tails&quot;</code></pre>
 </div>
 <div id="for-loops" class="section level3">
 <h3>For loops</h3>
@@ -610,6 +610,89 @@ if (mark &gt;= 18){
 </tr>
 </tbody>
 </table>
+<div id="apply-functions" class="section level3">
+<h3>Apply functions</h3>
+<p>Returns a vector or array or list of values obtained by applying a function to margins of an array or matrix. There many apply function such as:</p>
+<ul>
+<li><code>lapply(X, FUN, ..)</code>: returns a list of the same length as X, each element of which is the result of applying FUN to the corresponding element of X.</li>
+<li><code>lapply(X, FUN, ..)</code>: returns a vector of the same length as X, each element of which is the result of applying FUN to the corresponding element of X.</li>
+</ul>
+<pre class="r"><code>vector &lt;- seq(from = 2, to = 11, by = 2)
+# apply squared root of each element in vector
+lapply(vector, sqrt)</code></pre>
+<pre><code>## [[1]]
+## [1] 1.414214
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] 2.44949
+## 
+## [[4]]
+## [1] 2.828427
+## 
+## [[5]]
+## [1] 3.162278</code></pre>
+<pre class="r"><code>sapply(vector, sqrt)</code></pre>
+<pre><code>## [1] 1.414214 2.000000 2.449490 2.828427 3.162278</code></pre>
+<pre class="r"><code>sapply(vector, function(x){x^2})</code></pre>
+<pre><code>## [1]   4  16  36  64 100</code></pre>
+</div>
+<div id="timestamps" class="section level3">
+<h3>Timestamps</h3>
+<div id="date" class="section level4">
+<h4>Date</h4>
+<p>To covert string to Date object, it must be in the standard time format “year-month-day”.</p>
+<table>
+<thead>
+<tr class="header">
+<th>code</th>
+<th align="center">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>%d</td>
+<td align="center">Day of the month (decimal number)</td>
+</tr>
+<tr class="even">
+<td>%m</td>
+<td align="center">Month (decimal number)</td>
+</tr>
+<tr class="odd">
+<td>%b</td>
+<td align="center">Month (abbreviated)</td>
+</tr>
+<tr class="even">
+<td>%B</td>
+<td align="center">Month (full name)</td>
+</tr>
+<tr class="odd">
+<td>%y</td>
+<td align="center">Year (2 digit)</td>
+</tr>
+<tr class="even">
+<td>%Y</td>
+<td align="center">Year (4 digit)</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Sys.Date() To get today&#39;s day
+as.Date(&#39;1920-10-04&#39;)</code></pre>
+<pre><code>## [1] &quot;1920-10-04&quot;</code></pre>
+<pre class="r"><code>as.Date(&quot;october/4/1920&quot;, format=&quot;%B/%d/%Y&quot;)</code></pre>
+<pre><code>## [1] &quot;1920-10-04&quot;</code></pre>
+<pre class="r"><code>as.Date(&quot;Oct/4/1920&quot;, format=&quot;%b/%d/%Y&quot;)</code></pre>
+<pre><code>## [1] &quot;1920-10-04&quot;</code></pre>
+</div>
+<div id="time" class="section level4">
+<h4>Time</h4>
+<p>For more information <code>help(strptime)</code></p>
+<pre class="r"><code>as.POSIXct(&quot;october/4/1920 09:30:02&quot;, format=&quot;%B/%d/%Y %H:%M:%S&quot;)</code></pre>
+<pre><code>## [1] &quot;1920-10-04 09:30:02 WAT&quot;</code></pre>
+</div>
+</div>
 </div>
 
 

@@ -124,3 +124,51 @@ if (mark >= 18){
 | sort(x) | sort a vector or a factor; sort(c(5,2,9,1)) = 1 2 5 9 |
 | rev(x) | reverse vector items; rev(c(5,2,9,1)) = 1 9 2 5 |
 | append(x1, x2) | append item to vector; append(c(1,2,3), c(4,5)) = 1 2 3 4 5 |
+
+### Apply functions 
+Returns a vector or array or list of values obtained by applying a function to margins of an array or matrix. There many apply function such as:
+
+- `lapply(X, FUN, ..)`: returns a list of the same length as X, each element of which is the result of applying FUN to the corresponding element of X. 
+- `lapply(X, FUN, ..)`: returns a vector of the same length as X, each element of which is the result of applying FUN to the corresponding element of X. 
+
+```{r}
+vector <- seq(from = 2, to = 11, by = 2)
+# apply squared root of each element in vector
+lapply(vector, sqrt)
+```
+```{r}
+sapply(vector, sqrt)
+```
+```{r}
+sapply(vector, function(x){x^2})
+```
+### Timestamps
+#### Date
+To covert string to Date object, it must be in the standard time format "year-month-day". 
+
+| code     | Value   |
+|---------------|:-------------:|
+| %d      | Day of the month (decimal number) | 
+| %m      | Month (decimal number) |   
+| %b      | Month (abbreviated)    |    
+| %B	    | Month (full name) |
+| %y	    | Year (2 digit) |
+| %Y      | Year (4 digit) |
+
+```{r}
+# Sys.Date() To get today's day
+as.Date('1920-10-04')
+```
+```{r}
+as.Date("october/4/1920", format="%B/%d/%Y")
+```
+
+```{r}
+as.Date("Oct/4/1920", format="%b/%d/%Y")
+```
+#### Time
+For more information `help(strptime)`
+```{r}
+as.POSIXct("october/4/1920 09:30:02", format="%B/%d/%Y %H:%M:%S")
+```
+
