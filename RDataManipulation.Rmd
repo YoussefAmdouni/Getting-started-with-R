@@ -1,0 +1,306 @@
+---
+title: "R Data Manipulation"
+author: "Amdouni_Youssef"
+output: html_document
+---
+# Tidyverse
+Tidyverse is a powerful R tool for data manipulation, it includes the packages that we use in everyday data analyses. 
+
+- ggplot2 (data visualization)
+- dplyr (data wrangling)
+- tidyr (data wrangling)
+- purrr (functional programming toolkit)
+- readr (rectangular data importation such as csv,tsv and fwf)
+- tibble (modern dataframe)
+- forcats (factor variables handling)
+- stringr (string variable manipulation)
+
+### dplyr
+#### Creating data frames
+We can create data frames using the `data.frame()` function and pass vectors as arguments.
+
+```{r message=FALSE, warning=FALSE}
+# install.packages("tidyverse")
+library(tidyverse)
+```
+
+
+```{r}
+days <- c("Mo", "Tu", "We", "Th", "Fr")
+AAPL <- round(runif(5, min = 100, max = 300), 0)
+GOOG <- round(runif(5, min = 100, max = 300), 0)
+stocks <- data.frame(days, AAPL, GOOG)
+stocks <- as_tibble(stocks)
+stocks
+```
+```{r}
+dim(stocks)
+```
+Adding rows and columns: `rbind(df, newrow)`, `cbind(df, newcol)`.
+```{r}
+newcol <- c(126, 203, NA, NA, 256)
+stocks$newcol <- newcol # or stocks[["newcol"]] <- newcol or stocks[ ,"newcol"] <- newcol 
+stocks <- cbind(stocks, (newcol + 5))
+stocks
+```
+
+For Row and columns counts, we can use `nrow(stocks)` and `ncol(stocks)`. For columns and rows names we can use `colnames(stocks)` and `rownames(stocks)`
+```{r}
+# Column Names
+colnames(stocks)
+```
+
+Setting column names.
+```{r}
+colnames(stocks)[4:5] <- c("AMZN", "TSLA")
+stocks
+```
+Dealing with missing data.
+```{r}
+any(is.na(stocks)) # detect anywhere in stocks
+```
+```{r}
+any(is.na(stocks$aapl)) # anywhere in col
+```
+```{r}
+stocks[is.na(stocks)] <- 200 # replace NAs with something else
+stocks
+```
+
+
+#### Built-In R data frames
+we will use R built-in Data Frames such as mtcars, states, titanic, etc. to get a list of all available built-in data frames we can use `data()`.
+```{r}
+head(mtcars) # To view the last 6 rows respectively we should use tail()
+```
+```{r}
+# Data statistical summary 
+summary(mtcars)
+```
+```{r}
+# Data structure
+str(mtcars)
+```
+#### Data Selection & Indexing 
+data[rows, columns]
+```{r}
+df <- mtcars
+df[1,]
+```
+```{r}
+df[c(1,3,9), c("mpg", "cyl", "wt")]
+```
+```{r}
+# Getting all the values of a particular data frame column 
+# returns a vector
+df$cyl # or df[["cyl"]] or df[,"cyl"] or df[, 2]
+```
+```{r}
+# returns a data frames
+df["cyl"] # or df[2]
+```
+
+```{r}
+# subset(df, cyl==6 & mpg == 21.0, select = c("mpg", "cyl", "disp"))
+# Using R pipeline 
+df %>% 
+  subset(cyl==6 & mpg == 21.0, select = c("mpg", "cyl", "disp"))
+```
+
+```{r}
+order(-df$mpg)
+```
+```{r}
+head(df[order(-df$mpg), ])
+```
+`filter()` Allows us to select a subset of rows in a data frame. The first argument is the name of the data frame. The second and subsequent arguments are the expressions that filter the data frame. We will use the pipe operator throughout this section `%>%` that help us avoid long nested operations. 
+```{r}
+# filter(df, cyl==4, hp>65, mpg<27)
+df %>% filter(cyl==4, hp>65, mpg<27)
+```
+```{r}
+#filter() is a lot simpler than the normal way to do this with a dataframe
+df[df$cyl==4 & df$hp>65 & df$mpg<27, ]
+```
+`arrange()` Reorder data frame rows, it takes a data frame and a set of column names.
+
+`sample_n()` and `sample_frac()` To take a random sample of rows, `sample_n()` for a fixed number and `sample_frac()` for a fixed fraction.
+```{r}
+df %>% 
+  filter(cyl==4, hp>65, mpg<27) %>%
+  sample_n(size = 4) %>%
+  arrange(mpg)
+```
+`slice()` Select rows by position. It is also accompanied by a number of helpers for common use cases: `slice_head()`, `slice_tail()`, `slice_sample()`, `slice_sample` and `slice_max()`. 
+
+```{r}
+df %>% slice(2:4)
+```
+```{r}
+df %>% slice_max(mpg, n = 2)
+```
+`select()` To select a range of features.
+```{r}
+df %>%
+  select(mpg, cyl, hp) %>%
+  sample_n(3)
+```
+`rename()` To rename columns (It is not "in-place" we need to reassign the renamed data structures)
+```{r}
+df %>% rename(cylindre = cyl) %>% sample_n(3)
+```
+`distinct()` To return unique values in a table.
+```{r}
+df %>% distinct(cyl)
+```
+`mutate()` To add new columns that are functions of existing columns.
+```{r}
+df %>% 
+  mutate(newcol = mpg/wt) %>% 
+  select(mpg, wt, newcol) %>% 
+  sample_n(3)
+```
+`transmute()` To get only the new columns
+```{r}
+df %>% transmute(newcol = mpg/wt) %>% sample_n(3)
+```
+`summarise()` To collapse data frames into single rows using functions that aggregate results.
+```{r}
+df %>% summarise(average_weight = mean(wt, na.rm = T), average_mpg = mean(mpg, na.rm = T))
+```
+`group_by()` To group data by one or more variables. We can remove grouping by `ungroup()`.
+
+```{r}
+df %>% 
+  group_by(cyl) %>%
+  slice(1)
+```
+```{r}
+df %>% 
+  group_by(cyl) %>%
+  mutate(mean_mpg = mean(mpg, na.rm = T)) %>%
+  select(cyl, mpg, mean_mpg) %>%
+  arrange(cyl)
+```
+
+```{r}
+df %>% 
+  group_by(cyl) %>%
+  summarise(mean_mpg = mean(mpg, na.rm = T), 
+            std_mpg = sd(mpg, na.rm = T)) 
+  
+```
+Others useful functions: 
+```{r}
+df %>% count(cyl, .drop = FALSE)
+```
+```{r}
+# lead and lag are useful for time series data
+lead(1:10, 1)
+```
+```{r}
+lag(1:10, 2)
+```
+```{r}
+df %>% distinct(cyl)
+```
+```{r}
+df %>% relocate(starts_with('d'), .after = mpg) %>% slice(1:3)
+```
+`bind_rows()` and `bind_cols()` To bind multiple data frames by row and column.
+
+Mutating joins:
+
+- inner_join(df1, df2): includes all rows in df1 and df2.
+- left_join(df1, df2): includes all rows in df1.
+- right_join(df1, df2): includes all rows in df2.
+- full_join(df1, df2): includes all rows in df1 or df2.
+- semi_join(df1, df2): return all rows from df1 with a match in df2.
+- anti_join(df1, df2): return all rows from df1 without a match in df2.
+
+### Tidyr
+
+`pivot_longer()` To gather columns into key-value pairs.
+```{r}
+stocks$days <- as.Date("June-01-2021", format="%B-%d-%Y") + 1:5
+stocks %>% pivot_longer(AAPL:TSLA, names_to = "Symbols", values_to = "Price")
+```
+`pivot_wider()` To spread a key-value pair across multiple columns.
+```{r}
+stocks %>% pivot_longer(AAPL:TSLA, names_to = "Symbols", values_to = "Price") %>% pivot_wider(names_from = Symbols, values_from = Price)
+```
+```{r}
+stocks %>% gather(symbol, price, AAPL:TSLA) %>% spread(days, price)
+```
+`separate()` To separate a character column into multiple columns with a regular expression or numeric locations.
+```{r}
+stocks %>% separate(days, c("year", "month", "day"))
+```
+`unite()` To unite multiple columns into one by pasting strings together.
+
+```{r}
+stocks %>% separate(days, c("year", "month", "day")) %>% unite(date, c("year", "month", "day"), sep = "-")
+```
+
+
+### Regular Expressions & stringr
+
+`grepl()` Returns a logical indicating if the pattern was found.
+
+`grep()` Returns a vector of index locations of matching pattern instances.
+
+```{r}
+text <- "The licenses for most software are designed to take away your freedom to share and change it"
+textvect <- str_split(text, " ")[[1]]
+grepl('most',text)
+grep("to", textvect)
+```
+```{r}
+str_split(text, " ", simplify = T)
+```
+
+```{r}
+str_to_lower(text)
+str_to_upper(text)
+str_to_title(text)
+```
+```{r}
+str_sub(text, 1, 12)
+str_detect(text, "software")
+str_count(text, "to")
+```
+
+```{r}
+employee.data <- read.csv("data/employee-data.csv", nrows = 5, skip = 23, stringsAsFactors = FALSE)
+employee.data <- employee.data %>% select("first_name", "last_name", "birth_date", "gender", "title")
+employee.data <- employee.data %>% mutate(full_name = paste(if_else(gender=='M', "Mr", "Ms"), first_name, last_name, sep = " ")) 
+employee.data
+```
+
+```{r}
+str_split(employee.data$full_name, " ", simplify = T)
+```
+```{r}
+str_subset(employee.data$title, "Engineer")
+```
+```{r}
+str_extract(employee.data$title, "Engineer")
+```
+```{r}
+str_replace(employee.data$full_name, "Mr", "M.")
+```
+```{r}
+str_replace_all(employee.data$full_name, c("Mr"= "M.", "Ms"= "Ms."))
+```
+
+### Data Input and Output 
+
+Read a csv file using R: `read.csv('file.name.path.csv')`.
+
+Save a data frame as a csv file using R: `write.csv(df, file='file.name.path.csv')`.
+
+For excel file we should load the readxl package: `read_excel('file.xlsx',sheet='Sheet1')`.
+
+If we have multiple sheets we can import them into a list with `lapply()`.
+
+Writing to excel requires the xlsx package: `write.xlsx(df, "file.xlsx")`.
